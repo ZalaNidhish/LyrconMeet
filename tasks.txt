@@ -4,7 +4,7 @@ I have already done the setup for our LyrconMeet.
 
 what we have :
     Github repository : https://github.com/ZalaNidhish/LyrconMeet.git
-    vercel URL : https://lyrconmeet.vercel.app/
+    vercel URL : https://lyrcon-meet.vercel.app/
 
 
 what we need to do :
