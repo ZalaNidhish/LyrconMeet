@@ -1,0 +1,48 @@
+Hello guys !!!
+
+I have already done the setup for our LyrconMeet.
+
+what we have :
+    Github repository : https://github.com/ZalaNidhish/LyrconMeet.git
+    vercel URL : https://lyrconmeet.vercel.app/
+
+
+what we need to do :
+    1. Falgun, you will finish the frontend part of the project, there is already a basic schedule meeting button. You need to create one more page. wireframes will be provided to u.
+    2. Bhargav, you will work with me to finish the backend part of the project, we need to create APIs for scheduling meetings and fetching meetings.
+
+
+working of our project :
+    1. user will click on schedule meeting button and fill the form and submit it.
+    2. form will have fields like fullname, email, phone, meeting title, date and time.
+    3. after submitting the form, the data will be sent to the backend and stored in the database.
+
+
+How will we collaborate :
+    1. we will use github for version control and collaboration.
+    2. we will create branches for each feature and merge them to the main branch after completion.
+    3. we will use pull requests for code review and discussion.
+
+    eg: 
+    - falgun will create a branch named "frontend" and work on the frontend part of the project.
+    - Nidhish will create a branch named "backend-1" and work on the backend part of the project.
+    - bhargav will create a branch named "backend-2" and work on the backend part of the project.
+    - after completing the work, they will create a pull request to merge their branch to the main branch.
+
+    I will manage the pull requests and merge them after code review. 
+
+
+Timeline :
+    Tomorrow, we will complete frontend completely and also create the APIs for scheduling meetings and fetching meetings.
+
+API-1 : post /api/schedule-meeting
+    - this API will receive the meeting details from the frontend and store it in the database.
+    - this will be done by Nidhish (me).
+
+API-2 : get /api/get-meetings
+    - this API will fetch all the scheduled meetings from the database and send it to the frontend
+    - this will be done by Bhargav.
+
+Falgun needs to use the get /api/get-meetings API to update the calender input. Users can't schedule a meeting on a date and time which is already booked. So, you need to fetch the scheduled meetings and disable the dates and time slots which are already booked.
+
+This is the plan for our project. Let's work together and complete it successfully. If you have any questions or suggestions, feel free to ask.
