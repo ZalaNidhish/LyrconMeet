@@ -78,6 +78,8 @@ export default function ScheduleMeet() {
                         value={form.phone}
                         onChange={handleChange}
                         required
+                        pattern="[0-9]{10}"
+                        title="Phone number must be exactly 10 digits"
                         className="border border-gray-300 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
                     />
 
