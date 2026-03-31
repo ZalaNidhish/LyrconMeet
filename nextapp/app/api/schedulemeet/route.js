@@ -3,7 +3,12 @@ const sendMail = require("../../../lib/mailer");
 
 const dotenv = require("dotenv").config();
 
+const {connectDB} = require("../../../lib/db");
+
 export async function POST(req) {
+
+connectDB();
+
   const { fullname, email, phone, date, time } = await req.json();
 
   const existingMeeting = await meetingmodel.findOne({ date, time });
