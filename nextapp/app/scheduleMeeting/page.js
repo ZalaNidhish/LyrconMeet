@@ -22,7 +22,7 @@ export default function ScheduleMeet() {
     setloading(true);
 
     try {
-        
+
       const res = await fetch("/api/schedulemeet", {
         method: "POST",
         headers: {
@@ -57,8 +57,8 @@ export default function ScheduleMeet() {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-indigo-100 to-blue-200 flex items-center justify-center">
-      <div className="bg-white shadow-2xl rounded-3xl p-10 w-105">
+    <div className="min-h-screen bg-linear-to-br from-indigo-100 to-blue-200 flex items-center justify-center p-4">
+      <div className="bg-white shadow-2xl rounded-3xl p-10 w-full max-w-md">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-2">
           Schedule Meeting
         </h2>
