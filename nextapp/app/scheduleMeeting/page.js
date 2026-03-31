@@ -44,6 +44,25 @@ export default function ScheduleMeet() {
             alert("something went wrong");
         }
         setloading(false);
+        const res = await fetch("/api/schedulemeet", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(form)
+        });
+
+        const data = await res.json();
+
+        alert(data.message);
+
+        setForm({
+            fullname: "",
+            email: "",
+            phone: "",
+            date: "",
+            time: ""
+        });
     }
 
  const bookedSlot  = [

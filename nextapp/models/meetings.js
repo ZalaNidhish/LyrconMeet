@@ -23,6 +23,6 @@ const meetings = mongoose.Schema({
     }
 })
 
-const meetingModel = mongoose.model("meetings", meetings);
+const meetingModel = mongoose.models.meetings || mongoose.model("meetings", meetings);
 
 module.exports = meetingModel;
