@@ -11,6 +11,8 @@ export default function ScheduleMeet() {
         time: ""
     });
 
+    const [loading, setloading] = useState(false);
+
     function handleChange(e) {
         setForm({ ...form, [e.target.name]: e.target.value });
     }
@@ -18,23 +20,30 @@ export default function ScheduleMeet() {
     async function handleSubmit(e) {
         e.preventDefault();
 
-        await fetch("/api/schedulemeet", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(form)
-        });
+        setloading(true);
 
-        alert("Meeting Scheduled ✅");
+        try {
+            await fetch("/api/schedulemeet", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(form)
+            });
 
-        setForm({
-            fullname: "",
-            email: "",
-            phone: "",
-            date: "",
-            time: ""
-        });
+            alert("Meeting Scheduled ✅");
+
+            setForm({
+                fullname: "",
+                email: "",
+                phone: "",
+                date: "",
+                time: ""
+            });
+        } catch (err) {
+            alert("something went wrong");
+        }
+        setloading(false);
     }
 
     return (
@@ -100,7 +109,7 @@ export default function ScheduleMeet() {
                             required
                             onChange={handleChange}
                             className="border border-gray-300 p-3 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
-                            >
+                        >
                             <option value=""> Select time </option>
                             <option>9:00 AM</option>
                             <option>9:30 AM</option>
@@ -116,9 +125,25 @@ export default function ScheduleMeet() {
 
                     <button
                         type="submit"
-                        className="bg-indigo-500 text-white p-3 rounded-xl font-semibold hover:bg-indigo-600 active:scale-95 transition duration-200 shadow-lg"
+                        disabled={loading}
+                        className={`bg-indigo-500 text-white p-3 rounded-xl font-semibold hover:bg-indigo-600 active:scale-95 transition duration-200 shadow-lg" ${loading ? "opacity-70 cursor-not-allowed" : "hover:bg-indigo-600 active:scale-95"}`}
                     >
-                        Schedule Meeting
+
+                        {
+                            loading ? (
+                                <div className="flex items-center justify-center gap-2">
+
+                                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+
+                                    Scheduling...
+
+                                </div>
+                            ) :
+                                (
+                                    "Schedule Meeting"
+
+                                )
+                        }
                     </button>
 
                 </form>
