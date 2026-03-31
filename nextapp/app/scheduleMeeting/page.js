@@ -336,4 +336,4 @@ const timeSlots = [
       </div>
     </div>
   );
-}
+
