@@ -3,7 +3,7 @@ const sendMail = require("../../../lib/mailer");
 
 const dotenv = require("dotenv").config();
 
-const connectDB = require("../../../lib/db");
+const {connectDB} = require("../../../lib/db");
 
 export async function POST(req) {
 
