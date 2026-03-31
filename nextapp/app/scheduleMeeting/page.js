@@ -18,7 +18,7 @@ export default function ScheduleMeet() {
     async function handleSubmit(e) {
         e.preventDefault();
 
-        await fetch("/api/schedulemeet", {
+        const res = await fetch("/api/schedulemeet", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -26,7 +26,9 @@ export default function ScheduleMeet() {
             body: JSON.stringify(form)
         });
 
-        alert("Meeting Scheduled ✅");
+        const data = await res.json();
+
+        alert(data.message);
 
         setForm({
             fullname: "",
