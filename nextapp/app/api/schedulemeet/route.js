@@ -1,26 +1,51 @@
 const meetingmodel = require("../../../models/meetings");
+const sendMail = require("../../../lib/mailer");
 
-export async function POST(req){
-    const {fullname, email, phone, date, time} = await req.json();
+const dotenv = require("dotenv").config();
 
-    const existingMeeting = await meetingmodel.findOne({date, time});
+export async function POST(req) {
+  const { fullname, email, phone, date, time } = await req.json();
 
-    if(existingMeeting){
-        return new Response(JSON.stringify({message: "Meeting slot already booked"}), {status: 400});
-    }
+  const existingMeeting = await meetingmodel.findOne({ date, time });
 
-    try {
-        const newMeeting = new meetingmodel({
-            fullname,
-            email,
-            phone,
-            date,
-            time
-        })
-        await newMeeting.save();
-        return new Response(JSON.stringify({message: "Meeting scheduled successfully"}), {status: 200});
-    } catch (error) {
-        return new Response(JSON.stringify({message: "Error scheduling meeting"}), {status: 500});
-    }   
+  if (existingMeeting) {
+    return new Response(
+      JSON.stringify({ message: "Meeting slot already booked" }),
+      { status: 400 },
+    );
+  }
+
+  try {
+    const newMeeting = meetingmodel.create({
+      fullname,
+      email,
+      phone,
+      date,
+      time,
+    });
+
+    await sendMail({
+      to: email,
+      subject: "Meeting Scheduled",
+      text: `Hi ${fullname}, your meeting is scheduled on ${date} at ${time}`,
+    });
+
+    // admin notification
+    await sendMail({
+      to: process.env.EMAIL_USER,
+      subject: "Meeting Scheduled",
+      text: `Hi Admin, a new meeting is scheduled on ${date} at ${time} by ${fullname}, (${email}, ${phone})`,
+    });
+
+    return new Response(
+      JSON.stringify({ message: "Meeting scheduled successfully" }),
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error("Error scheduling meeting:", error);
+    return new Response(
+      JSON.stringify({ message: "Error scheduling meeting" }),
+      { status: 500 },
+    );
+  }
 }
-
