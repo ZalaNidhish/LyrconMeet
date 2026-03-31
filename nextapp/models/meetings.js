@@ -1,0 +1,28 @@
+const mongoose = require("mongoose");
+
+const meetings = mongoose.Schema({
+    fullname: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
+    phone: {
+        type: String,
+        required: true
+    },
+    date: {
+        type: String,
+        required: true
+    },
+    time: {
+        type: String,
+        required: true
+    }
+})
+
+const meetingModel = mongoose.model("meetings", meetings);
+
+module.exports = meetingModel;
