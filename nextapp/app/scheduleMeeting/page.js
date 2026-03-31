@@ -46,6 +46,29 @@ export default function ScheduleMeet() {
         setloading(false);
     }
 
+ const bookedSlot  = [
+ { "date":"2026-04-05", "time":"10:00 AM" },
+ { "date":"2026-04-05", "time":"11:30 AM" },
+ { "date":"2026-04-06", "time":"9:00 AM" }
+]
+
+const timeSlots = [
+
+"9:00 AM",
+"9:30 AM",
+"10:00 AM",
+"10:30 AM",
+"11:00 AM",
+"11:30 AM",
+"12:00 PM"
+
+];
+
+    function isBooked(time){
+        return bookedSlot.some(slot => 
+            slot.date === form.date && slot.time === time
+        );
+    }
     return (
 
         <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-blue-200 flex items-center justify-center">
@@ -111,14 +134,25 @@ export default function ScheduleMeet() {
                             className="border border-gray-300 p-3 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
                         >
                             <option value=""> Select time </option>
-                            <option>9:00 AM</option>
-                            <option>9:30 AM</option>
-                            <option>10:00 AM</option>
-                            <option>10:30 AM</option>
-                            <option>11:00 AM</option>
-                            <option>11:30 AM</option>
-                            <option>12:00 PM</option>
-                            <option>12:30 PM</option>
+                            {
+                                timeSlots.map((slot)=>{
+                                    const booked = isBooked(slot);
+                                    return (
+                                        <option
+                                        key={slot}
+                                        value={slot}
+                                        disabled={booked}
+                                        className={
+                                            booked ? "text-gray-400 bg-gray-100" : "text-black"
+                                        }
+                                        >
+                                            {
+                                                booked ? slot + "(Booked)" : slot
+                                            }
+                                        </option>
+                                    );
+                                })
+                            }
                         </select>
 
                     </div>
