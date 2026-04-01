@@ -1,5 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
+
 
 export default function ScheduleMeet() {
   const [form, setForm] = useState({
@@ -11,18 +13,56 @@ export default function ScheduleMeet() {
   });
 
   const [loading, setloading] = useState(false);
+  const [bookedSlots, setBookedSlots] = useState([]);
+
+  useEffect(() => {
+    async function fetchBookedSlots() {
+      try {
+        const res = await fetch("/api/getmeetslots");
+        const data = await res.json();
+
+        setBookedSlots(Array.isArray(data.data) ? data.data : []);
+      } catch (err) {
+        console.log(err);
+        setBookedSlots([]);
+      }
+    }
+
+    fetchBookedSlots();
+  }, []);
+
+  const timeSlots = [
+    "9:00 AM",
+    "9:30 AM",
+    "10:00 AM",
+    "10:30 AM",
+    "11:00 AM",
+    "11:30 AM",
+    "12:00 PM",
+  ];
+
+  function isBooked(time) {
+    return (
+      Array.isArray(bookedSlots) &&
+      bookedSlots.some((slot) => slot.date === form.date && slot.time === time)
+    );
+  }
 
   function handleChange(e) {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+      ...(name === "date" && { time: "" }),
+    }));
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
-
     setloading(true);
 
     try {
-
       const res = await fetch("/api/schedulemeet", {
         method: "POST",
         headers: {
@@ -33,7 +73,13 @@ export default function ScheduleMeet() {
 
       const data = await res.json();
 
-      alert(data.message);
+      const updated = await fetch("/api/getmeetslots");
+      const updatedData = await updated.json();
+
+      setBookedSlots(Array.isArray(updatedData.data) ? updatedData.data : []);
+      setloading(false);
+
+      toast.success(data.message);
 
       setForm({
         fullname: "",
@@ -43,17 +89,9 @@ export default function ScheduleMeet() {
         time: "",
       });
     } catch (err) {
-      alert("something went wrong");
+      setloading(false);
+      alert("Something went wrong");
     }
-    setloading(false);
-
-    setForm({
-      fullname: "",
-      email: "",
-      phone: "",
-      date: "",
-      time: "",
-    });
   }
 
   return (
@@ -113,24 +151,38 @@ export default function ScheduleMeet() {
               value={form.time}
               required
               onChange={handleChange}
+              disabled={!form.date}
               className="border border-gray-300 p-3 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
             >
-              <option value=""> Select time </option>
-              <option>9:00 AM</option>
-              <option>9:30 AM</option>
-              <option>10:00 AM</option>
-              <option>10:30 AM</option>
-              <option>11:00 AM</option>
-              <option>11:30 AM</option>
-              <option>12:00 PM</option>
-              <option>12:30 PM</option>
+              <option value="">Select time</option>
+
+              {timeSlots.map((slot) => {
+                const booked = isBooked(slot);
+
+                return (
+                  <option
+                    key={slot}
+                    value={slot}
+                    disabled={booked}
+                    className={
+                      booked ? "text-gray-400 bg-gray-100" : "text-black"
+                    }
+                  >
+                    {booked ? `${slot} (Booked)` : slot}
+                  </option>
+                );
+              })}
             </select>
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className={`bg-indigo-500 text-white p-3 rounded-xl font-semibold hover:bg-indigo-600 active:scale-95 transition duration-200 shadow-lg" ${loading ? "opacity-70 cursor-not-allowed" : "hover:bg-indigo-600 active:scale-95"}`}
+            className={`bg-indigo-500 text-white p-3 rounded-xl font-semibold shadow-lg transition ${
+              loading
+                ? "opacity-70 cursor-not-allowed"
+                : "hover:bg-indigo-600 active:scale-95"
+            }`}
           >
             {loading ? (
               <div className="flex items-center justify-center gap-2">

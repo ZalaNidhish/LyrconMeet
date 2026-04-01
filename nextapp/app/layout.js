@@ -1,6 +1,6 @@
 import "./globals.css";
-
-import {connectDB} from "../lib/db.js";
+import { Toaster } from "react-hot-toast";
+import { connectDB } from "../lib/db.js";
 
 connectDB();
 
@@ -11,11 +11,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html
-      lang="en"
-      className={`h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="en" className={`h-full antialiased`}>
+      <body className="min-h-full flex flex-col">
+        <Toaster position="top-center" />
+        {children}
+      </body>
     </html>
   );
 }
