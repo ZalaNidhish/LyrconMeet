@@ -79,6 +79,7 @@ export default function ScheduleMeet() {
       setBookedSlots(Array.isArray(updatedData.data) ? updatedData.data : []);
       setloading(false);
 
+      console.log(data.status);
       toast.success(data.message);
 
       setForm({
